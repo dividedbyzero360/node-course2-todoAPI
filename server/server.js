@@ -16,13 +16,26 @@ app.post("/todos",(req,res)=>{
     newTODO.save().then((doc)=>{
        res.send(doc);
     }).catch((err)=>{
+        res.status(400).send(err);
+    });
+    // console.log( req.body);
+    // console.log(typeof req.body);
+    // console.log("-------------------------------------------");
+});
+
+app.get("/todos",(req,res)=>{
+    Todo.find().then((todos)=>{
+        res.send({
+            todos
+        });
+    }).catch((err)=>{
         res.send(err);
     });
-    console.log( req.body);
-    console.log(typeof req.body);
-    console.log("-------------------------------------------");
 });
 var port= process.env.port || 3000;
 app.listen(port,()=>{
 console.log("Server started at port 3000");
 });
+
+
+module.exports.app=app;
