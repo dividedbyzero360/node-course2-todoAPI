@@ -95,6 +95,18 @@ app.get('/todos/:id', (req, res) => {
     })
   });
 
+app.post("/users",(req,res)=>{
+     var body = _.pick(req.body, ['email', 'password']);
+     var newUser=new User(body);
+     newUser.save().then(()=>{
+      return  newUser.generateAuthToken();
+    }).then((token)=>{
+      res.header("x-auth",token ).send(newUser);  
+    }).catch((err)=>{
+        res.status(400).send(err);
+    });
+});
+
 var port= process.env.port;
 app.listen(port,()=>{
 console.log("Server started at port 3000");
